@@ -1,0 +1,40 @@
+[package]
+name = "octus-core"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.75"
+description = "Octus çekirdek ağ motoru: yalnızca RFC 1918 kapsamında keşif ve denetim"
+publish = false
+
+[lib]
+name = "octus_core"
+path = "src/lib.rs"
+
+[[bin]]
+name = "octus-core"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+governor = "0.6"
+pnet = "0.35"
+schemars = "0.8"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+surge-ping = "0.8"
+thiserror = "1"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "sync", "time", "signal", "net", "io-util"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1

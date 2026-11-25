@@ -1,0 +1,268 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Envelope",
+  "type": "object",
+  "oneOf": [
+    {
+      "type": "object",
+      "required": [
+        "module",
+        "type"
+      ],
+      "properties": {
+        "module": {
+          "$ref": "#/definitions/Module"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "scan_started"
+          ]
+        }
+      }
+    },
+    {
+      "type": "object",
+      "required": [
+        "targets",
+        "type"
+      ],
+      "properties": {
+        "targets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VerifiedTarget"
+          }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "scope_verified"
+          ]
+        }
+      }
+    },
+    {
+      "type": "object",
+      "required": [
+        "done",
+        "module",
+        "total",
+        "type"
+      ],
+      "properties": {
+        "done": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "module": {
+          "$ref": "#/definitions/Module"
+        },
+        "total": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "progress"
+          ]
+        }
+      }
+    },
+    {
+      "type": "object",
+      "required": [
+        "code",
+        "message",
+        "module",
+        "type"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "module": {
+          "$ref": "#/definitions/Module"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "warning"
+          ]
+        }
+      }
+    },
+    {
+      "type": "object",
+      "required": [
+        "code",
+        "message",
+        "module",
+        "type"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "module": {
+          "$ref": "#/definitions/Module"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "error"
+          ]
+        }
+      }
+    },
+    {
+      "description": "M1: canlı host. `mac` ve `vendor` yalnızca ARP ile gelir.",
+      "type": "object",
+      "required": [
+        "ip",
+        "methods",
+        "type"
+      ],
+      "properties": {
+        "ip": {
+          "$ref": "#/definitions/ScopedIp"
+        },
+        "mac": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "methods": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DiscoveryMethod"
+          }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "host_found"
+          ]
+        },
+        "vendor": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    {
+      "type": "object",
+      "required": [
+        "duration_ms",
+        "module",
+        "status",
+        "type"
+      ],
+      "properties": {
+        "duration_ms": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "module": {
+          "$ref": "#/definitions/Module"
+        },
+        "status": {
+          "$ref": "#/definitions/FinishStatus"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "scan_finished"
+          ]
+        }
+      }
+    }
+  ],
+  "required": [
+    "scan_id",
+    "schema_version",
+    "ts_ms"
+  ],
+  "properties": {
+    "scan_id": {
+      "type": "string"
+    },
+    "schema_version": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0.0
+    },
+    "ts_ms": {
+      "description": "Unix epoch, milisaniye.",
+      "type": "integer",
+      "format": "uint64",
+      "minimum": 0.0
+    }
+  },
+  "definitions": {
+    "DiscoveryMethod": {
+      "description": "Bir hostun hangi yöntemle canlı görüldüğü.",
+      "type": "string",
+      "enum": [
+        "arp",
+        "icmp",
+        "tcp_connect"
+      ]
+    },
+    "FinishStatus": {
+      "type": "string",
+      "enum": [
+        "ok",
+        "failed",
+        "cancelled"
+      ]
+    },
+    "Module": {
+      "type": "string",
+      "enum": [
+        "core",
+        "discovery",
+        "port_scan",
+        "banner",
+        "tls",
+        "passive",
+        "pipeline"
+      ]
+    },
+    "ScopedIp": {
+      "type": "string",
+      "format": "ip"
+    },
+    "VerifiedTarget": {
+      "type": "object",
+      "required": [
+        "host_count",
+        "target"
+      ],
+      "properties": {
+        "host_count": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "target": {
+          "description": "Normalize edilmiş hedef (IP veya CIDR).",
+          "type": "string"
+        }
+      }
+    }
+  }
+}
