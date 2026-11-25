@@ -1,0 +1,113 @@
+# =============================================================================
+# Octus - kök .gitignore
+# Monorepo: core/ (Rust), api/ (Python), web/ (Vue 3 + Vite), contracts/, docs/
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Gizli bilgiler ve yerel ortam (ASLA commit edilmez)
+# -----------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt.local
+secrets.*
+credentials.*
+.secrets/
+
+# -----------------------------------------------------------------------------
+# Tarama verisi ve çıktıları (hassas: IP, MAC, banner, açık portlar)
+# Ağ keşif verisi kişisel veri ve kurumsal bilgi içerebilir (KVKK).
+# -----------------------------------------------------------------------------
+/data/
+/scans/
+/reports/
+/exports/
+*.ndjson
+*.pcap
+*.pcapng
+*.cap
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+audit.log
+audit-*.log
+scan-*.json
+!contracts/**/*.json
+!contracts/examples/**/*.json
+
+# -----------------------------------------------------------------------------
+# Rust (core/)
+# -----------------------------------------------------------------------------
+/core/target/
+**/target/
+**/*.rs.bk
+*.pdb
+# Cargo.lock: binary crate olduğu için commit edilir (çekirdek bir uygulama).
+# Kütüphane olsaydı bu satır açılırdı.
+# Cargo.lock
+
+# -----------------------------------------------------------------------------
+# Python (api/)
+# -----------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+*.egg
+.eggs/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+.venv/
+venv/
+env/
+ENV/
+pip-log.txt
+pip-delete-this-directory.txt
+# Alembic yerel çıktıları (migration dosyaları commit edilir)
+alembic/versions/*.pyc
+# Pydantic / uygulama yerel ayarları
+local_settings.py
+instance/
+
+# -----------------------------------------------------------------------------
+# Node / Vue 3 / Vite (web/)
+# -----------------------------------------------------------------------------
+node_modules/
+web/node_modules/
+web/dist/
+web/dist-ssr/
+web/coverage/
+web/.vite/
+web/*.local
+web/npm-debug.log*
+web/yarn-debug.log*
+web/yarn-error.log*
+web/pnpm-debug.log*
+# Lock dosyaları commit edilir (tekrarlanabilir kurulum)
+# package-lock.json için ayrıca bir şey eklenmez.
+*.tsbuildinfo
+.eslintcache
+.stylelintcache
+# OpenAPI'den üretilen tip dosyası commit edilir; yalnızca geçici çıktılar hariç.
+web/src/api/*.tmp.ts
+
+# -----------------------------------------------------------------------------
+# Test ve kapsam raporları
+# -----------------------------------------------------------------------------
